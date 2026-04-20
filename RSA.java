@@ -10,7 +10,7 @@ public class RSA {
             sc.close();
             return;
         }
-        int soP = sc.nextInt();
+        int p = sc.nextInt();
 
         System.out.print("Nhap q: ");
         if (!sc.hasNextInt()) {
@@ -18,7 +18,7 @@ public class RSA {
             sc.close();
             return;
         }
-        int soQ = sc.nextInt();
+        int q = sc.nextInt();
 
         System.out.print("Nhap e: ");
         if (!sc.hasNextInt()) {
@@ -26,7 +26,7 @@ public class RSA {
             sc.close();
             return;
         }
-        int soE = sc.nextInt();
+        int e = sc.nextInt();
 
         System.out.print("Nhap m: ");
         if (!sc.hasNextInt()) {
@@ -34,55 +34,37 @@ public class RSA {
             sc.close();
             return;
         }
-        int soM = sc.nextInt();
+        int m = sc.nextInt();
 
-        if (!laSoNguyenTo(soP) || !laSoNguyenTo(soQ)) {
+        if (!laSoNguyenTo(p) || !laSoNguyenTo(q)) {
             System.out.println("Loi: p va q phai la so nguyen to.");
             sc.close();
             return;
         }
 
-        if (!laSoDuong(soE) || !laSoDuong(soM)) {
+        if (!laSoDuong(e) || !laSoDuong(m)) {
             System.out.println("Loi: e va m phai la so nguyen duong.");
             sc.close();
             return;
         }
 
-        int soN = soP * soQ;
-        int phiN = (soP - 1) * (soQ - 1);
+        int n = p * q;
+        int phiN = (p - 1) * (q - 1);
 
-        if (phiN <= 1) {
-            System.out.println("Loi: phiN khong hop le.");
-            sc.close();
-            return;
-        }
-
-        if (soE <= 0 || soE >= phiN) {
-            System.out.println("Loi: e phai thoa 0 < e < phiN.");
-            sc.close();
-            return;
-        }
-
-        if (ucln(soE, phiN) != 1) {
-            System.out.println("Loi: e va phiN khong nguyen to cung nhau, khong ton tai nghich dao modulo.");
-            sc.close();
-            return;
-        }
-
-        int soD = TimNghichDao.tim_nghich_dao_euclid_mo_rong(phiN, soE);
-        if (soD == -1) {
+        int d = TimNghichDao.tim_nghich_dao_euclid_mo_rong(phiN, e);
+        if (d == -1) {
             System.out.println("Loi: khong ton tai d = e^-1 (mod phiN).");
             sc.close();
             return;
         }
 
-        int C = luyThuaModulo(soM, soD, soN);
-        int M = luyThuaModulo(C, soE, soN);
+        int C = luyThuaModulo(m, d, n);
+        int M = luyThuaModulo(C, e, n);
 
         System.out.println("-------------------------------");
-        System.out.println("n = " + soN);
+        System.out.println("n = " + n);
         System.out.println("phiN = " + phiN);
-        System.out.println("d = " + soD);
+        System.out.println("d = " + d);
         System.out.println("C = " + C);
         System.out.println("M = " + M);
 
@@ -103,17 +85,6 @@ public class RSA {
             }
         }
         return true;
-    }
-
-    private static int ucln(int a, int b) {
-        int soA = Math.abs(a);
-        int soB = Math.abs(b);
-        while (soB != 0) {
-            int du = soA % soB;
-            soA = soB;
-            soB = du;
-        }
-        return soA;
     }
 
     private static int luyThuaModulo(int coSo, int soMu, int modulo) {
