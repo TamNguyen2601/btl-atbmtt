@@ -6,50 +6,49 @@ public class Caesar {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        // Nhap ban ro M
-        System.out.print("Nhap ban ro (M): ");
-        String m = sc.nextLine();
+        // M = AWOMANGIVESANDFO
+        System.out.print("Nhap ban ro (p): ");
+        String banRoInput = sc.nextLine();
 
-        // Nhap khoa K
-        System.out.print("Nhap khoa dich chuyen (K): ");
-        int k = sc.nextInt();
+        if (!banRoInput.matches("[a-zA-Z]+")) {
+            System.out.println("Loi: Dau vao chi duoc phep chua chu cai.");
+            sc.close();
+            return;
+        }
 
-        // Thuc hien ma hoa
-        String ketQua = maHoa(m, k);
+        System.out.print("Nhap khoa tinh tien (k): ");
+        if (sc.hasNextInt()) {
+            int khoaK = sc.nextInt();
+            String banMa = maHoaCaesar(banRoInput, khoaK);
 
-        // Xuat ket qua
-        System.out.println("-------------------------------");
-        System.out.println("Ban ma hoa: " + ketQua);
+            System.out.println("-------------------------------");
+            System.out.println("Ban ma thu duoc (c): " + banMa);
+        } else {
+            System.out.println("Loi: Khoa k phai la mot so nguyen.");
+        }
 
         sc.close();
     }
 
-    public static String maHoa(String text, int k) {
-        StringBuilder result = new StringBuilder();
+    public static String maHoaCaesar(String banRo, int khoa) {
+        StringBuilder ketQuaBanMa = new StringBuilder();
 
-        // Xu ly khoa K de luon nam trong khoang 0-25
-        k = k % 26;
-        if (k < 0)
-            k += 26;
-
-        for (int i = 0; i < text.length(); i++) {
-            char ch = text.charAt(i);
-
-            // Ma hoa chu hoa (A-Z)
-            if (Character.isUpperCase(ch)) {
-                char c = (char) (((int) ch + k - 65) % 26 + 65);
-                result.append(c);
-            }
-            // Ma hoa chu thuong (a-z)
-            else if (Character.isLowerCase(ch)) {
-                char c = (char) (((int) ch + k - 97) % 26 + 97);
-                result.append(c);
-            }
-            // Giu nguyen ky tu dac biet, so, khoang trang
-            else {
-                result.append(ch);
-            }
+        int khoaHieuChinh = khoa % 26;
+        if (khoaHieuChinh < 0) {
+            khoaHieuChinh += 26;
         }
-        return result.toString();
+
+        for (int i = 0; i < banRo.length(); i++) {
+            char kyTuHienTai = banRo.charAt(i);
+            char chuHoa = Character.toUpperCase(kyTuHienTai);
+
+            int p = chuHoa - 'A';
+            int c = (p + khoaHieuChinh) % 26;
+
+            char kyTuMaHoa = (char) (c + 'A');
+            ketQuaBanMa.append(kyTuMaHoa);
+        }
+
+        return ketQuaBanMa.toString();
     }
 }

@@ -5,52 +5,50 @@ import java.util.Scanner;
 public class VigenereLapKhoa {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        // input: M = HONESTYISTHEBE
+        System.out.print("Nhap ban ro (p): ");
+        String banRoInput = sc.nextLine();
 
-        // Nhap ban ro M
-        System.out.print("Nhap ban ro (M): ");
-        String m = sc.nextLine();
+        if (!banRoInput.matches("[a-zA-Z]+")) {
+            System.out.println("Loi: Dau vao chi duoc phep chua chu cai.");
+            sc.close();
+            return;
+        }
+        // input K = ABADBE
+        System.out.print("Nhap khoa lap (k): ");
+        String khoaInput = sc.nextLine();
 
-        // Nhap khoa K (dang chuoi)
-        System.out.print("Nhap khoa K (dang chu): ");
-        String k = sc.nextLine();
+        if (!khoaInput.matches("[a-zA-Z]+")) {
+            System.out.println("Loi: Khoa chi duoc phep chua chu cai.");
+            sc.close();
+            return;
+        }
 
-        // Thuc hien ma hoa
-        String ketQua = maHoaVigenere(m, k);
+        String banMa = maHoaVigenere(banRoInput, khoaInput);
 
-        // Xuat ket qua
         System.out.println("-------------------------------");
-        System.out.println("Ban ma hoa: " + ketQua);
+        System.out.println("Ban ma thu duoc (c): " + banMa);
 
         sc.close();
     }
 
-    public static String maHoaVigenere(String text, String key) {
-        StringBuilder result = new StringBuilder();
-        key = key.toUpperCase(); // Chuan hoa khoa sang chu hoa
-        int keyIndex = 0;
+    public static String maHoaVigenere(String banRo, String khoa) {
+        StringBuilder ketQuaBanMa = new StringBuilder();
 
-        for (int i = 0; i < text.length(); i++) {
-            char ch = text.charAt(i);
+        String banRoInHoa = banRo.toUpperCase();
+        String khoaInHoa = khoa.toUpperCase();
+        int doDaiKhoa = khoaInHoa.length();
 
-            if (Character.isLetter(ch)) {
-                // Xac dinh do dich chuyen tu khoa K tai vi tri hien tai
-                int shift = key.charAt(keyIndex) - 'A';
+        for (int i = 0; i < banRoInHoa.length(); i++) {
+            int p = banRoInHoa.charAt(i) - 'A';
+            int k = khoaInHoa.charAt(i % doDaiKhoa) - 'A';
 
-                if (Character.isUpperCase(ch)) {
-                    char c = (char) (((ch - 'A' + shift) % 26) + 'A');
-                    result.append(c);
-                } else {
-                    char c = (char) (((ch - 'a' + shift) % 26) + 'a');
-                    result.append(c);
-                }
+            int c = (p + k) % 26;
 
-                // Tang index cua khoa va quay vong (lap khoa)
-                keyIndex = (keyIndex + 1) % key.length();
-            } else {
-                // Giu nguyen ky tu dac biet va khong tang keyIndex
-                result.append(ch);
-            }
+            char kyTuMaHoa = (char) (c + 'A');
+            ketQuaBanMa.append(kyTuMaHoa);
         }
-        return result.toString();
+
+        return ketQuaBanMa.toString();
     }
 }

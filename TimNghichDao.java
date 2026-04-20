@@ -4,62 +4,49 @@ public class TimNghichDao {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        // Nhap a va n
-        System.out.print("Nhap so a: ");
-        int a = sc.nextInt();
-        System.out.print("Nhap modulo n: ");
-        int n = sc.nextInt();
+        System.out.print("Nhap so b: ");
+        int b = sc.nextInt();
+        System.out.print("Nhap modulo m: ");
+        int m = sc.nextInt();
 
-        // Tim nghich dao modulo
-        int x = findInverse(a, n);
+        int nghich_dao = tim_nghich_dao_euclid_mo_rong(m, b);
 
-        // Xuat ket qua
         System.out.println("-------------------------------");
-        if (x == -1) {
-            System.out.println("Khong ton tai nghich dao modulo vi gcd(a, n) != 1");
+        if (nghich_dao == -1) {
+            System.out.println("Khong ton tai nghich dao modulo");
         } else {
-            System.out.println("Nghich dao modulo x = a^-1 mod n la: " + x);
-            System.out.println("Kiem tra: (" + a + " * " + x + ") % " + n + " = " + (1L * a * x % n));
+            System.out.println("Nghich dao modulo la: " + nghich_dao);
         }
 
         sc.close();
     }
 
-    public static int findInverse(int a, int n) {
-        int m0 = n;
-        int y = 0, x = 1;
+    public static int tim_nghich_dao_euclid_mo_rong(int m, int b) {
+        int a1 = 0, a2 = m;
+        int b1 = 1, b2 = b;
 
-        if (n == 1)
-            return 0;
-
-        while (a > 1) {
-            // Neu n = 0 ma a > 1 thi gcd != 1
-            if (n == 0)
+        while (true) {
+            if (b2 == 0) {
                 return -1;
+            }
 
-            // q la thuong so
-            int q = a / n;
-            int t = n;
+            if (b2 == 1) {
+                if (b1 < 0) {
+                    b1 = b1 + m;
+                }
+                return b1;
+            }
 
-            // n la so du (giong thuat toan Euclid thong thuong)
-            n = a % n;
-            a = t;
-            t = y;
+            int q = a2 / b2;
 
-            // Cap nhat x va y theo cong thuc Euclid mo rong
-            y = x - q * y;
-            x = t;
+            int t1 = a1 - q * b1;
+            int t2 = a2 - q * b2;
+
+            a1 = b1;
+            a2 = b2;
+
+            b1 = t1;
+            b2 = t2;
         }
-
-        // Dam bao x la so duong
-        if (x < 0)
-            x += m0;
-
-        // Kiem tra lai neu a ban dau va n ban dau khong nguyen to cung nhau
-        // (Neu a sau vong lap khong bang 1 nghia la gcd > 1)
-        if (a != 1)
-            return -1;
-
-        return x;
     }
 }

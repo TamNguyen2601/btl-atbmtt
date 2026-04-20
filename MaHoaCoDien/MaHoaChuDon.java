@@ -3,60 +3,46 @@ package MaHoaCoDien;
 import java.util.Scanner;
 
 public class MaHoaChuDon {
-    // Bang chu cai chuan de doi chieu
-    public static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static final String BANG_CHU_CAI_CHUAN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        // Input: M = LIKEFATHERLIKESO
+        System.out.print("Nhap ban ro (p): ");
+        String banRoInput = sc.nextLine();
 
-        // Nhap ban ro M
-        System.out.print("Nhap ban ro (M): ");
-        String m = sc.nextLine();
+        if (!banRoInput.matches("[a-zA-Z]+")) {
+            System.out.println("Loi: Dau vao chi duoc phep chua chu cai.");
+            sc.close();
+            return;
+        }
+        // Key: K = LYFGMKNERXJPQIVATOHSZDBUCW
+        System.out.print("Nhap khoa hoan vi (26 chu cai): ");
+        String khoaInput = sc.nextLine().toUpperCase();
 
-        // Nhap khoa K (K phai la mot chuoi 26 chu cai hoan vi)
-        // Vi du: QWERTYUIOPASDFGHJKLZXCVBNM
-        System.out.print("Nhap khoa K (26 chu cai hoan vi): ");
-        String k = sc.nextLine().toUpperCase();
-
-        if (k.length() != 26) {
-            System.out.println("Loi: Khoa K phai co dung 26 chu cai!");
+        if (khoaInput.length() != 26 || !khoaInput.matches("[A-Z]+")) {
+            System.out.println("Loi: Khoa phai co dung 26 chu cai va khong chua ky tu dac biet.");
         } else {
-            // Thuc hien ma hoa
-            String ketQua = maHoaChuDon(m, k);
-
-            // Xuat ket qua
+            String banMa = maHoaChuDon(banRoInput, khoaInput);
             System.out.println("-------------------------------");
-            System.out.println("Ban ma hoa: " + ketQua);
+            System.out.println("Ban ma thu duoc (c): " + banMa);
         }
 
         sc.close();
     }
 
-    public static String maHoaChuDon(String text, String key) {
-        StringBuilder result = new StringBuilder();
+    public static String maHoaChuDon(String banRo, String khoa) {
+        StringBuilder ketQuaBanMa = new StringBuilder();
+        String banRoInHoa = banRo.toUpperCase();
 
-        for (int i = 0; i < text.length(); i++) {
-            char ch = text.charAt(i);
+        for (int i = 0; i < banRoInHoa.length(); i++) {
+            char kyTuHienTai = banRoInHoa.charAt(i);
+            int chiSo = BANG_CHU_CAI_CHUAN.indexOf(kyTuHienTai);
 
-            if (Character.isLetter(ch)) {
-                // Tim vi tri cua ky tu trong bang chu cai chuan
-                char upperCh = Character.toUpperCase(ch);
-                int index = ALPHABET.indexOf(upperCh);
-
-                // Lay ky tu tuong ung tai vi tri do trong khoa K
-                char replacement = key.charAt(index);
-
-                // Giu nguyen dinh dang hoa/thuong
-                if (Character.isLowerCase(ch)) {
-                    result.append(Character.toLowerCase(replacement));
-                } else {
-                    result.append(replacement);
-                }
-            } else {
-                // Giu nguyen ky tu dac biet, so, khoang trang
-                result.append(ch);
-            }
+            char kyTuThayThe = khoa.charAt(chiSo);
+            ketQuaBanMa.append(kyTuThayThe);
         }
-        return result.toString();
+
+        return ketQuaBanMa.toString();
     }
 }
