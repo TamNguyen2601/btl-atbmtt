@@ -76,15 +76,15 @@ public class RSA {
             return;
         }
 
-        int banMaC = luyThuaModulo(soM, soD, soN);
-        int banRoM = luyThuaModulo(banMaC, soE, soN);
+        int C = luyThuaModulo(soM, soD, soN);
+        int M = luyThuaModulo(C, soE, soN);
 
         System.out.println("-------------------------------");
         System.out.println("n = " + soN);
         System.out.println("phiN = " + phiN);
         System.out.println("d = " + soD);
-        System.out.println("C = " + banMaC);
-        System.out.println("M = " + banRoM);
+        System.out.println("C = " + C);
+        System.out.println("M = " + M);
 
         sc.close();
     }
