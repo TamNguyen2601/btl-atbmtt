@@ -4,6 +4,7 @@ public class RSA {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
+        // input: p =37, q = 53, e = 47, m = 41
         System.out.print("Nhap p: ");
         if (!sc.hasNextInt()) {
             System.out.println("Loi: p phai la so nguyen.");

@@ -3,9 +3,10 @@ import java.util.Scanner;
 public class TimNghichDao {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
+        // input b = 2656
         System.out.print("Nhap so b: ");
         int b = sc.nextInt();
+        // input m = 5741
         System.out.print("Nhap modulo m: ");
         int m = sc.nextInt();
 
